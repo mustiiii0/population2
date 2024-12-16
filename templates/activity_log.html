@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}سجل النشاطات{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>سجل النشاطات</h1>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>المستخدم</th>
+                <th>العملية</th>
+                <th>الوقت</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.user_id }}</td>
+                <td>{{ log.activity }}</td>
+                <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

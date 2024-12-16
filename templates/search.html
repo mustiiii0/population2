@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Sök efter Person{% endblock %}
+
+{% block content %}
+<div class="search-container">
+    <h1>Sök efter Person</h1>
+    <form method="GET" action="{{ url_for('search') }}">
+        <div class="form-group">
+            <label for="first_name">Förnamn</label>
+            <input type="text" id="first_name" name="first_name" value="{{ request.args.get('first_name', '') }}">
+        </div>
+        <div class="form-group">
+            <label for="last_name">Efternamn</label>
+            <input type="text" id="last_name" name="last_name" value="{{ request.args.get('last_name', '') }}">
+        </div>
+        <div class="form-group">
+            <label for="gender">Kön</label>
+            <select id="gender" name="gender">
+                <option value="">Alla</option>
+                <option value="male" {% if request.args.get('gender') == 'male' %}selected{% endif %}>Man</option>
+                <option value="female" {% if request.args.get('gender') == 'female' %}selected{% endif %}>Kvinna</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Sök</button>
+    </form>
+
+    {% if persons %}
+    <h2>Resultat</h2>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>National ID</th>
+                <th>Namn</th>
+                <th>Kön</th>
+                <th>Födelsedatum</th>
+                <th>Åtgärder</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for person in persons %}
+            <tr>
+                <td>{{ person.national_id }}</td>
+                <td>{{ person.first_name }} {{ person.last_name }}</td>
+                <td>{{ person.gender }}</td>
+                <td>{{ person.birth_date.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    <a href="{{ url_for('edit_person', national_id=person.national_id) }}" class="btn btn-small">Redigera</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Inga resultat hittades.</p>
+    {% endif %}
+</div>
+{% endblock %}
